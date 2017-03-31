@@ -195,9 +195,6 @@ int texture_test(const cl::Context &ctx, const cl::Device &dev, const cl::Comman
     unsigned char *watermarkImg = (unsigned char *)memalign(MEM_ALIGNMENT, watermarkSize);
     unsigned char *outputImg    = (unsigned char *)memalign(MEM_ALIGNMENT, size);
 
-    std::memcpy(inputImg, imagea.data(), size);
-    std::memcpy(watermarkImg, imageb.data(), watermarkSize);
-
 
     cl_int ok;
     cl::Image2D clImgInput      = cl::Image2D(ctx, (cl_mem_flags)(CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR),
@@ -215,6 +212,12 @@ int texture_test(const cl::Context &ctx, const cl::Device &dev, const cl::Comman
     void *mappedImgWatermark    = queue.enqueueMapImage(clImgWatermark, CL_TRUE, CL_MAP_WRITE,
                                                         { 0, 0, 0 }, { watermarkW, watermarkH, 1 },
                                                         &mappedImgWatermarkPitch, nullptr, nullptr, nullptr, &ok);
+
+    // Put memcpy above enqueueMapImage is undefined in OpenCL Specificiation!
+    // Even it works!
+    std::memcpy(inputImg, imagea.data(), size);
+    std::memcpy(watermarkImg, imageb.data(), watermarkSize);
+
 
     queue.enqueueUnmapMemObject(clImgInput, mappedImgInput);
     queue.enqueueUnmapMemObject(clImgWatermark, mappedImgWatermark);
