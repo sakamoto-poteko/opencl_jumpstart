@@ -4,7 +4,7 @@ project(offdpm)
 
 find_package(OpenCL REQUIRED)
 
-add_executable(${PROJECT_NAME} "main.cpp" "clutils.cpp")
+add_executable(${PROJECT_NAME} "main.cpp" "clutils.cpp" "lodepng.cpp")
 add_definitions(-DCL_HPP_TARGET_OPENCL_VERSION=120)
 add_definitions(-DCL_HPP_MINIMUM_OPENCL_VERSION=110)
 
