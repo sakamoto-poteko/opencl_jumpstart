@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 project(offdpm)
 
 
-add_executable(${PROJECT_NAME} "main.cpp" "clutils.cpp" "lodepng.cpp")
+add_executable(${PROJECT_NAME} "main.cpp" "clutils.cpp" "lodepng.cpp" "cltest.cl" "cl_helper.hpp")
 
 find_package(OpenCL 1.2 REQUIRED)
 include_directories(${OPENCL_INCLUDE_DIRS})
